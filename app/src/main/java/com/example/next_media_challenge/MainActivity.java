@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.next_media_challenge.model.PostModel;
+import com.example.next_media_challenge.repository.PostRepositoryDB;
 import com.example.next_media_challenge.request.Services;
 import com.example.next_media_challenge.util.api.PostApi;
+import com.example.next_media_challenge.viewModels.ViewModelDB;
 
 import java.util.List;
 
@@ -21,6 +23,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     Button _testButton;
+
+    int page = 1;
+
+    // database var
+    ViewModelDB viewModelDB;
+    private PostRepositoryDB _postRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
