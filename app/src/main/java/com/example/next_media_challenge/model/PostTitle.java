@@ -2,9 +2,7 @@ package com.example.next_media_challenge.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import androidx.room.Entity;
 
-@Entity
 public class PostTitle {
     @SerializedName("rendered")
     private String rendered;
