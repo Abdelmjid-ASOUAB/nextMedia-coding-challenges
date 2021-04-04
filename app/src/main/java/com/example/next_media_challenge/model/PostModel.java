@@ -2,9 +2,13 @@ package com.example.next_media_challenge.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
 public class PostModel  {
 
+    @PrimaryKey
     @SerializedName("id")
     private int id;
 
@@ -59,88 +63,5 @@ public class PostModel  {
                 ", title='" + title.toString() + '\'' +
                 '}';
     }
-
-    /* @SerializedName("userId")
-    private int userId;
-
-    @SerializedName("id")
-    private int id;
-
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("body")
-    private String body;
-
-
-    public int getDate() {
-        return userId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-
-    @Override
-    public String toString() {
-        return "PostModel{" +
-                "userId=" + userId +
-                ", id=" + id +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                '}';
-    }*/
 }
-
-
-/*
-public class PostModel  {
-    // Model Class for our Posts .
-    @SerializedName("date")
-    private String date;
-
-    @SerializedName("id")
-    private int id;
-
-    @SerializedName("title")
-    private Title title;
-
-
-    // Contractors
-    public PostModel( String date, int id) {
-        this.date = date;
-        this.id = id;
-    }
-
-
-
-    public String getDate() {
-        return date;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-
-    @Override
-    public String toString() {
-        return "PostModel{" +
-
-                ", date='" + date + '\'' +
-                ", id=" + id +
-                '}';
-    }
-
-}
-*/
 
