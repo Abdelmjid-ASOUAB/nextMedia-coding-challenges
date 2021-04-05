@@ -1,6 +1,11 @@
 package com.example.next_media_challenge;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -11,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.next_media_challenge.adapters.RecyclerViewPostAdapters;
 import com.example.next_media_challenge.model.PostModel;
 import com.example.next_media_challenge.repository.PostRepositoryDB;
 import com.example.next_media_challenge.request.Services;
@@ -30,25 +36,22 @@ public class MainActivity extends AppCompatActivity {
     ViewModelDB viewModelDB;
     private PostRepositoryDB _postRepository;
 
+    private RecyclerView _recyclerViewPosts;
+    private RecyclerViewPostAdapters _adaptersPosts;
+    private LinearLayoutManager _linearLayoutManagerPosts;
+
+    private boolean loading = true;
+    int lastVisibleItems, visibleItemCount, lastPart = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initTestButton();
+        initRepository();
+        initViewModel();
+        initRecyclerViewPost();
+        loadPostsApi(page);
 
-    }
-
-    /**
-     * init Test Button
-     */
-    private void initTestButton(){
-        _testButton =findViewById(R.id.button3);
-        _testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadPostsApi(1);
-            }
-        });
     }
 
 
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     /** insert post in Local Db **/
                     //TODO: insert post in Local Db
                     print(post.toString());
+                    _postRepository.insert(post);
                 }
             }
 
@@ -89,7 +93,87 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * init Post repository
+     **/
+    private void initRepository() {
+        _postRepository = new PostRepositoryDB(this.getApplication());
+    }
 
+
+    /**
+     * method for init  RecyclerView  Posts content configuration & Listener
+     */
+    private void initRecyclerViewPost() {
+        /**
+         *  layout Manager for Posts
+         */
+        _linearLayoutManagerPosts = new LinearLayoutManager(this);
+
+        /**
+         *  recyclerView
+         */
+        _recyclerViewPosts = findViewById(R.id.post_recycler_view);
+        _recyclerViewPosts.setLayoutManager(_linearLayoutManagerPosts);
+        _recyclerViewPosts.setHasFixedSize(true);
+
+        /**
+         * Connect recycler View with adapter
+         */
+        _adaptersPosts = new RecyclerViewPostAdapters();
+        _recyclerViewPosts.setAdapter(_adaptersPosts);
+
+        /**
+         *  bottom ScrollListener to Load more Posts on the bottom
+         * */
+        _recyclerViewPosts.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                loadMorePostByPage(dy);
+            }
+        });
+
+
+    }
+
+    /**
+     * method for load Post from APi using {loadPostsApi} on top
+     * in this method i create a algorithm that check is there any new Post data
+     * in Api i called {loadPostsApi} in OnCreate Method and  every scrolling 7 Posts
+     * with this algorithm i keep local database updated with Api
+     */
+    private void loadMorePostByPage(int dy) {
+
+        if (dy > 0) { //check for scroll down
+            visibleItemCount = _linearLayoutManagerPosts.getChildCount();
+            lastVisibleItems = _linearLayoutManagerPosts.findFirstVisibleItemPosition();
+
+            if (lastVisibleItems != 0 && lastVisibleItems % 7 == 0 && lastPart != lastVisibleItems) {
+                print("send update ====> " + lastVisibleItems + "  page : " + (++page));
+                loadPostsApi(++page);
+                lastPart = lastVisibleItems;
+            }
+
+
+        }
+    }
+
+    /**
+     * init View Model and
+     * get all data from database and passe them to post adapter and
+     * add listener to listen if {loadPostData} add posts to  local DB
+     */
+    private void initViewModel(){
+        viewModelDB = ViewModelProviders.of(this).get(ViewModelDB.class);
+        viewModelDB.getAllPosts().observe(this, new Observer<List<PostModel>>() {
+            @Override
+            public void onChanged(List<PostModel> postModels) {
+                _adaptersPosts.setPosts(postModels);
+            }
+        });
+
+    }
 
 
     /**
