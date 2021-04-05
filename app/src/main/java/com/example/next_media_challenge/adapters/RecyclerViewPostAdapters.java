@@ -45,7 +45,7 @@ public class RecyclerViewPostAdapters extends RecyclerView.Adapter<RecyclerViewP
         return _Posts == null ?0: _Posts.size();
     }
 
-    public static class PostViewHolder extends RecyclerView.ViewHolder{
+    public  class PostViewHolder extends RecyclerView.ViewHolder{
         TextView title;
         TextView date;
         int id;
@@ -53,6 +53,16 @@ public class RecyclerViewPostAdapters extends RecyclerView.Adapter<RecyclerViewP
             super(itemView);
             title =itemView.findViewById(R.id.title);
             date= itemView.findViewById(R.id.date);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position= getAdapterPosition();
+                    if(_Listener!=null && position != RecyclerView.NO_POSITION){
+                        _Listener.OnPostClick(_Posts.get(position).getId());
+                    }
+                }
+            });
+
         }
     }
 
@@ -60,7 +70,11 @@ public class RecyclerViewPostAdapters extends RecyclerView.Adapter<RecyclerViewP
      * add listener for the Post item
      */
     public interface OnPostClickListener{
-        void OnPostClick();
+        void OnPostClick(int idPost);
+    }
+
+    public void OnPostClickListener(OnPostClickListener listener){
+        _Listener =listener;
     }
 
 }
