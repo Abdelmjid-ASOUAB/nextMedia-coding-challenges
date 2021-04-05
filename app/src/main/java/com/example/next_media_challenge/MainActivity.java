@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void OnPostClick(int idPost) {
                 Intent  intent = new Intent(MainActivity.this,SinglePage.class);
-
+                intent.putExtra(SinglePage.EXTRA_ID,idPost);
                 startActivity(intent);
             }
         });
