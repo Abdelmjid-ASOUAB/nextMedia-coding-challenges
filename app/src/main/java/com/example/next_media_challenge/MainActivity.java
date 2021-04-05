@@ -2,6 +2,7 @@ package com.example.next_media_challenge;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.next_media_challenge.adapters.RecyclerViewCategoryAdapters;
 import com.example.next_media_challenge.adapters.RecyclerViewPostAdapters;
 import com.example.next_media_challenge.model.PostModel;
 import com.example.next_media_challenge.repository.PostRepositoryDB;
@@ -40,8 +42,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewPostAdapters _adaptersPosts;
     private LinearLayoutManager _linearLayoutManagerPosts;
 
+
+    private RecyclerView _recyclerViewCategory;
+    private RecyclerViewCategoryAdapters _adaptersCategory;
+    private LinearLayoutManager _linearLayoutCategory;
+
     private boolean loading = true;
     int lastVisibleItems, visibleItemCount, lastPart = 0;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         initRepository();
         initViewModel();
         initRecyclerViewPost();
+        initRecyclerViewCategory();
         loadPostsApi(page);
 
     }
@@ -138,6 +147,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * method for init  RecyclerView  Posts content configuration
+     */
+    private void initRecyclerViewCategory() {
+
+        /**
+         *  layout Manager for Posts
+         */
+        _linearLayoutCategory = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,true);
+
+        /**
+         *  recyclerView
+         */
+        _recyclerViewCategory = findViewById(R.id.category_list);
+        _recyclerViewCategory.setLayoutManager(_linearLayoutCategory);
+        _recyclerViewCategory.setHasFixedSize(true);
+
+        /**
+         * Connect recycler View with adapter
+         */
+        _adaptersCategory = new RecyclerViewCategoryAdapters();
+        _recyclerViewCategory.setAdapter(_adaptersCategory);
+
+    }
+    /**
      * method for load Post from APi using {loadPostsApi} on top
      * in this method i create a algorithm that check is there any new Post data
      * in Api i called {loadPostsApi} in OnCreate Method and  every scrolling 7 Posts
@@ -175,6 +208,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * init  Gradient app Bar
+     * to Main Activity
+     */
+    private void appBarConfig() {
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        ;
+    }
 
     /**
      * i use it for pint data
