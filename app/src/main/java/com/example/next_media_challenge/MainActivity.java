@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerViewPost();
         initRecyclerViewCategory();
         loadPostsApi(page);
+
 
     }
 
@@ -142,6 +144,17 @@ public class MainActivity extends AppCompatActivity {
                 loadMorePostByPage(dy);
             }
         });
+
+
+        _adaptersPosts.OnPostClickListener(new RecyclerViewPostAdapters.OnPostClickListener() {
+            @Override
+            public void OnPostClick(int idPost) {
+                Intent  intent = new Intent(MainActivity.this,SinglePage.class);
+
+                startActivity(intent);
+            }
+        });
+
 
 
     }

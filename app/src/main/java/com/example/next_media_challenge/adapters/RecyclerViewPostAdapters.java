@@ -67,7 +67,7 @@ public class RecyclerViewPostAdapters extends RecyclerView.Adapter<RecyclerViewP
     }
 
     /**
-     * add listener for the Post item
+     * add listener for the Post item u have to passe Post ID
      */
     public interface OnPostClickListener{
         void OnPostClick(int idPost);
