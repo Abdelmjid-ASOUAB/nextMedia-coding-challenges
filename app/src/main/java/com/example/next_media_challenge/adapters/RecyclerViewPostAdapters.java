@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerViewPostAdapters extends RecyclerView.Adapter<RecyclerViewPostAdapters.PostViewHolder> {
     private List<PostModel> _Posts=new ArrayList<>();
-
+    private  OnPostClickListener _Listener;
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,4 +55,12 @@ public class RecyclerViewPostAdapters extends RecyclerView.Adapter<RecyclerViewP
             date= itemView.findViewById(R.id.date);
         }
     }
+
+    /**
+     * add listener for the Post item
+     */
+    public interface OnPostClickListener{
+        void OnPostClick();
+    }
+
 }
