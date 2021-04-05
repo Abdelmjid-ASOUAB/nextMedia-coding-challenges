@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     int page = 1;
 
     // database var
-    ViewModelDB viewModelDB;
-    private PostRepositoryDB _postRepository;
+    ViewModelDB _viewModelDB;
+  //  private PostRepositoryDB _postRepository;
 
     private RecyclerView _recyclerViewPosts;
     private RecyclerViewPostAdapters _adaptersPosts;
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initRepository();
         initViewModel();
         initRecyclerViewPost();
         initRecyclerViewCategory();
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     /** insert post in Local Db **/
                     //TODO: insert post in Local Db
                     print(post.toString());
-                    _postRepository.insert(post);
+                    _viewModelDB.insert(post);
                 }
             }
 
@@ -104,12 +103,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * init Post repository
-     **/
-    private void initRepository() {
-        _postRepository = new PostRepositoryDB(this.getApplication());
-    }
 
 
     /**
@@ -211,8 +204,8 @@ public class MainActivity extends AppCompatActivity {
      * add listener to listen if {loadPostData} add posts to  local DB
      */
     private void initViewModel(){
-        viewModelDB = ViewModelProviders.of(this).get(ViewModelDB.class);
-        viewModelDB.getAllPosts().observe(this, new Observer<List<PostModel>>() {
+        _viewModelDB = ViewModelProviders.of(this).get(ViewModelDB.class);
+        _viewModelDB.getAllPosts().observe(this, new Observer<List<PostModel>>() {
             @Override
             public void onChanged(List<PostModel> postModels) {
                 _adaptersPosts.setPosts(postModels);

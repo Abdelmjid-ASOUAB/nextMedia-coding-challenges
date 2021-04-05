@@ -6,6 +6,7 @@ import com.example.next_media_challenge.model.PostModel;
 import com.example.next_media_challenge.repository.PostRepositoryDB;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -32,5 +33,16 @@ public class ViewModelDB extends AndroidViewModel {
 
     public LiveData<List<PostModel>> getAllPosts() {
         return mAllPosts;
+    }
+
+    /**
+     * get post from local database by ID
+      * @param id
+     * @return
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public PostModel getPostById(int id) throws ExecutionException, InterruptedException {
+        return mRepository.getPostById(id);
     }
 }
