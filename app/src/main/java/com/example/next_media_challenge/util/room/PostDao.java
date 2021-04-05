@@ -24,4 +24,8 @@ public interface PostDao {
 
     @Query("SELECT * from PostModel ORDER BY date DESC")
     LiveData<List<PostModel>> getAllPostFromDb();
+
+
+    @Query("SELECT * FROM PostModel WHERE id=:id ")
+    PostModel getPostByID(int id);
 }
