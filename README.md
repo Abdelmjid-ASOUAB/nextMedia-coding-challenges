@@ -7,7 +7,7 @@ This repo has been made in order to participate to the coding challenge by NextM
   git clone https://github.com/Abdelmjid-ASOUAB/nextMedia-coding-challenges.git
   ```
 
-2- Open it by Android-Studio and 
+2- Open it by Android-Studio , wait gradle to get dependencies and
  ``` run ``` it.
 
 ##  how i worked in this challenge  :
