@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.example.next_media_challenge.model.PostModel;
@@ -18,6 +20,8 @@ public class SinglePage extends AppCompatActivity {
     ViewModelDB _viewModelDB;
     PostModel _post;
     int _postId;
+    Window window;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +31,7 @@ public class SinglePage extends AppCompatActivity {
         initTitleTextView();
         getDataExtractData();
         getPostById(_postId);
-
+        statueBarColor();
 
     }
 
@@ -71,4 +75,15 @@ public class SinglePage extends AppCompatActivity {
 
 
     }
+
+    /**
+     * set statue bar Color
+     */
+    private  void  statueBarColor(){
+        if(Build.VERSION.SDK_INT>21){
+            window =this.getWindow();
+            window.setStatusBarColor(this.getResources().getColor(R.color.gradient_color_1));
+        }
+    }
+
 }

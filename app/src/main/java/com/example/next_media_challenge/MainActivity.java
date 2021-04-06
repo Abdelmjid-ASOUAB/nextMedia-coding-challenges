@@ -12,10 +12,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 import com.example.next_media_challenge.adapters.RecyclerViewCategoryAdapters;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean loading = true;
     int lastVisibleItems, visibleItemCount, lastPart = 0;
     Toolbar toolbar;
-
+    Window window;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerViewPost();
         initRecyclerViewCategory();
         loadPostsApi(page);
-
+        statueBarColor();
 
     }
 
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadPostsApi(int page) {
         PostApi postApi = Services.getPostApi();
+
         Call<List<PostModel>> call = postApi.getPosts(page + "");
         call.enqueue(new Callback<List<PostModel>>() {
             @Override
@@ -223,7 +226,18 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        ;
+
+    }
+
+
+    /**
+     * set statue bar Color
+     */
+    private  void  statueBarColor(){
+        if(Build.VERSION.SDK_INT>21){
+            window =this.getWindow();
+            window.setStatusBarColor(this.getResources().getColor(R.color.gradient_color_1));
+        }
     }
 
     /**
